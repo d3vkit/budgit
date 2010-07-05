@@ -19,10 +19,10 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem "redgreen", :version => '1.2.2'
-  config.gem "rspec", :version => '1.3.0'
-  config.gem "rspec-rails", :version => '1.3.2'
-  config.gem "ZenTest", :version => '4.3.3'
+  #config.gem "redgreen", :version => '1.2.2'
+  #config.gem "rspec", :version => '1.3.0'
+  #config.gem "rspec-rails", :version => '1.3.2'
+  #config.gem "ZenTest", :version => '4.3.3'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
