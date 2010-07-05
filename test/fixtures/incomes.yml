@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  occurance: MyString
+  amount: 1
+  type: MyString
+
+two:
+  name: MyString
+  occurance: MyString
+  amount: 1
+  type: MyString

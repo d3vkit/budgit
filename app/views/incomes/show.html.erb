@@ -1,0 +1,23 @@
+<p>
+  <b>Name:</b>
+  <%=h @income.name %>
+</p>
+
+<p>
+  <b>Occurance:</b>
+  <%=h @income.occurance %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%=h @income.amount %>
+</p>
+
+<p>
+  <b>Type:</b>
+  <%=h @income.type %>
+</p>
+
+
+<%= link_to 'Edit', edit_income_path(@income) %> |
+<%= link_to 'Back', incomes_path %>
