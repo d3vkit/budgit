@@ -8,19 +8,6 @@ describe UsersController do
     controller.should be_an_instance_of(UsersController)
   end
 
-  describe "GET 'home'" do
-    it "should be successful" do
-      get 'home'
-      response.should be_success
-    end
-
-    it "should have the right title" do
-      get 'home'
-      repsonse.should_have_tag("title","Home | Budgit")
-    end
-  end
-
-
   describe "GET 'income'" do
     it "should be successful" do
       get 'income'
