@@ -4,10 +4,8 @@ one:
   name: MyString
   occurance: MyString
   amount: 1
-  type: MyString
 
 two:
   name: MyString
   occurance: MyString
   amount: 1
-  type: MyString

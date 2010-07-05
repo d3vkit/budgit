@@ -1,0 +1,18 @@
+<p>
+  <b>Name:</b>
+  <%=h @bill.name %>
+</p>
+
+<p>
+  <b>Occurance:</b>
+  <%=h @bill.occurance %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%=h @bill.amount %>
+</p>
+
+
+<%= link_to 'Edit', edit_bill_path(@bill) %> |
+<%= link_to 'Back', bills_path %>
