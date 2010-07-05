@@ -16,7 +16,7 @@ describe UsersController do
 
     it "should have the right title" do
       get 'income'
-      response.should_have_tag("title","Incomes | Budgit")
+      response.should have_tag("title","Incomes | Budgit")
     end
   end
 
@@ -28,7 +28,7 @@ describe UsersController do
 
     it "should have the right title" do
       get 'bill'
-      response.should_have_tag("title","Bills | Budgit")
+      response.should have_tag("title","Bills | Budgit")
     end
   end
 end
