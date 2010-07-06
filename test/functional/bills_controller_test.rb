@@ -1,4 +1,4 @@
-require 'test_helper'
+#require 'test_helper'
 
 class BillsControllerTest < ActionController::TestCase
   test "should get index" do
@@ -43,3 +43,4 @@ class BillsControllerTest < ActionController::TestCase
     assert_redirected_to bills_path
   end
 end
+

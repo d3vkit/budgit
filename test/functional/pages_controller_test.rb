@@ -1,4 +1,4 @@
-require 'test_helper'
+#require 'test_helper'
 
 class PagesControllerTest < ActionController::TestCase
   # Replace this with your real tests.
@@ -6,3 +6,4 @@ class PagesControllerTest < ActionController::TestCase
     assert true
   end
 end
+

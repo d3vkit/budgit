@@ -1,4 +1,4 @@
-require 'test_helper'
+#require 'test_helper'
 
 class BillTest < ActiveSupport::TestCase
   # Replace this with your real tests.
@@ -6,3 +6,4 @@ class BillTest < ActiveSupport::TestCase
     assert true
   end
 end
+
