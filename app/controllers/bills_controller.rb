@@ -2,6 +2,7 @@ class BillsController < ApplicationController
   # GET /bills
   # GET /bills.xml
   def index
+    @title = "Bills"
     @bills = Bill.all
 
     respond_to do |format|
@@ -81,3 +82,4 @@ class BillsController < ApplicationController
     end
   end
 end
+

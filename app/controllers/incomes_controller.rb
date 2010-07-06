@@ -2,6 +2,7 @@ class IncomesController < ApplicationController
   # GET /incomes
   # GET /incomes.xml
   def index
+    @title = "Incomes"
     @incomes = Income.all
 
     respond_to do |format|
@@ -81,3 +82,4 @@ class IncomesController < ApplicationController
     end
   end
 end
+
