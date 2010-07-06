@@ -1,18 +1,8 @@
-<p>
-  <b>Name:</b>
+<h2>
+	<%= gravatar_for @user %>
   <%=h @user.name %>
-</p>
-
-<p>
-  <b>Email:</b>
-  <%=h @user.email %>
-</p>
-
-<p>
-  <b>Password:</b>
-  <%=h @user.password %>
-</p>
-
+</h2>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
+

@@ -7,6 +7,19 @@ describe UsersController do
     controller.should be_an_instance_of(UsersController)
   end
 
+  describe "GET 'show'" do
+
+    before(:each) do
+      @user = Factory(:user)
+      User.stub!(:find, @user.id).and_return(@user)
+    end
+
+    it "should be successful" do
+      get :show, :id => @user
+      response.should be_success
+    end
+  end
+
   describe "GET 'new'" do
     it "should be successful" do
       get 'new'
