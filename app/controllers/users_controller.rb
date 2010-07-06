@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   def index
-    @title = "Users"
     @users = User.all
 
     respond_to do |format|
@@ -10,7 +9,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    @title = "Show"
     @user = User.find(params[:id])
 
     respond_to do |format|
@@ -30,12 +28,10 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @title = "Edit"
     @user = User.find(params[:id])
   end
 
   def create
-    @title = "Create"
     @user = User.new(params[:user])
 
     respond_to do |format|
@@ -65,7 +61,6 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @title = "Destroy"
     @user = User.find(params[:id])
     @user.destroy
 
