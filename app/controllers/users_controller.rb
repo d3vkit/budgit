@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  # GET /users
-  # GET /users.xml
   def index
     @title = "Users"
     @users = User.all
@@ -11,8 +9,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1
-  # GET /users/1.xml
   def show
     @title = "Show"
     @user = User.find(params[:id])
@@ -23,10 +19,8 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/new
-  # GET /users/new.xml
   def new
-    @title = "New"
+    @title = "Sign Up"
     @user = User.new
 
     respond_to do |format|
@@ -35,14 +29,11 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1/edit
   def edit
     @title = "Edit"
     @user = User.find(params[:id])
   end
 
-  # POST /users
-  # POST /users.xml
   def create
     @title = "Create"
     @user = User.new(params[:user])
@@ -58,8 +49,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # PUT /users/1
-  # PUT /users/1.xml
   def update
     @title = "Update"
     @user = User.find(params[:id])
@@ -75,8 +64,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.xml
   def destroy
     @title = "Destroy"
     @user = User.find(params[:id])
