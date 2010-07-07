@@ -1,8 +1,14 @@
-<h2>
-	<%= gravatar_for @user %>
-  <%=h @user.name %>
-</h2>
+<div class ="profile">
+	<div class="main">
+		<h2>
+			<%= gravatar_for @user %>
+			<%= h @user.name %>
+		</h2>
+	</div>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+	<div class="sidebar round">
+		<strong>Name</strong> <%= link_to 'Edit', edit_user_path(@user) %> |
+		<%= link_to 'Back', users_path %>
+	</div>
+</div>
 
