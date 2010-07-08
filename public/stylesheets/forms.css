@@ -13,3 +13,18 @@ a.signup_button {
   padding: 20px;
 }
 
+.field, .actions {
+  margin: 10px;
+}
+
+.actions input.submit {
+  -moz-border-radius:15px;
+  background:-moz-linear-gradient(center top , #FFFFFF, #EAEAEA) repeat scroll 0 0 transparent;
+  border:1px solid #DEDEDE;
+  color:#484848;
+  font-size:1.125em;
+  font-weight:bold;
+  padding:10px 15px;
+  cursor: pointer;
+}
+

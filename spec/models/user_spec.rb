@@ -84,11 +84,11 @@ describe User do
     end
 
     it "should have a password attribute" do
-      @user.should respond_to(:password)
+      @user.should respond_to(:encypted_password)
     end
 
     it "should set the encrypted password" do
-      @user.password.should_not be_blank
+      @user.encypted_password.should_not be_blank
     end
 
     describe "has_password? method" do
