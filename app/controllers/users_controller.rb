@@ -56,6 +56,10 @@ class UsersController < ApplicationController
     @title = "Settings"
 
     respond_to do |format|
+      if !params[:user][:admin].blank? && admin_user
+        @user.admin = params[:user][:admin]
+        @user.save
+      end
       if @user.update_attributes(params[:user])
         format.html { redirect_to(@user, :notice => 'Settings successfully updated.') }
         format.xml  { head :ok }

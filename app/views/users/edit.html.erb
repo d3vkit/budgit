@@ -13,12 +13,17 @@
   </div>
   <div class="field">
     <%= f.label :password %><br />
-    <%= f.text_field :password %>
+    <%= f.password_field :password %>
   </div>
   <div class="field">
     <%= f.label :password_confirmation, "Confirmation" %><br />
-    <%= f.text_field :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
   </div>
+  <% if signed_in? && current_user.admin? %>
+		<div class="field">
+		  <%= f.check_box :admin %><%= f.label :admin, "Admin?"%>
+		</div>
+	<% end %>
   <div class="actions">
     <%= f.submit 'Update' %>
   </div>
