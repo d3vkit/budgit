@@ -44,6 +44,7 @@ module SessionsHelper
 
   def redirect_back_or(default)
     redirect_to(session[:return_to] || default)
+    logger.info "session: #{session[:return_to]}; redirect to: #{default}"
     clear_return_to
   end
 
