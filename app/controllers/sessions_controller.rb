@@ -10,8 +10,8 @@ class SessionsController < ApplicationController
       flash.now[:error] = "Username and/or password incorrect"
       render "new"
     else
-      sign_in(user)
-      redirect_to user
+      sign_in user
+      redirect_back_or current_user
     end
   end
 

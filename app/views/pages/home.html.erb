@@ -3,5 +3,9 @@
   Simple Budgeting Made Simple
 </p>
 
-<%= link_to "Sign Up!", signup_path, :class => "signup_button round" %>
+<% if signed_in? %>
+	<%= link_to "View Profile", current_user, :class => "signup_button round" %>
+<% else %>
+	<%= link_to "Sign Up!", signup_path, :class => "signup_button round" %>
+<% end %>
 

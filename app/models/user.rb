@@ -13,6 +13,9 @@
 
 require 'digest'
 class User < ActiveRecord::Base
+  cattr_reader :per_page
+  @@per_page = 10
+
   has_many :incomes
   has_many :bills
 
