@@ -28,3 +28,23 @@ a.signup_button {
   cursor: pointer;
 }
 
+.hint {
+  position: absolute;
+  /* right: -250px; */
+  width: 200px;
+  margin: -4px 0 0 30px;
+  border: 1px solid #c93;
+  padding: 10px 12px;
+  background-color: #ffc;
+  display: none;
+}
+
+.hint .hint-pointer {
+  position: absolute;
+  left: -10px;
+  top: 5px;
+  width: 10px;
+  height: 19px;
+  background: url(/images/speech_bubble_pointer.gif) left top no-repeat;
+}
+

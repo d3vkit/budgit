@@ -6,9 +6,16 @@
 		</h2>
 	</div>
 
+	<% unless @user.bills.empty? %>
+		<div class="bills">
+			<%= render @bills %>
+		</div>
+	<% end %>
+
 	<div class="sidebar round">
 		<%= link_to 'Edit', edit_user_path(@user) %> |
-		<%= link_to 'Back', :back %>
+		<%= link_to 'Back', :back %> |
+		Bills: <%= @user.bills.count %>
 	</div>
 </div>
 

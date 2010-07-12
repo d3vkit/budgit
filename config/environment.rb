@@ -24,6 +24,7 @@ Rails::Initializer.run do |config|
   #config.gem "rspec-rails", :version => '1.3.2'
   #config.gem "ZenTest", :version => '4.3.3'
   config.gem 'will_paginate', :version => '2.3.12'
+  config.gem 'chronic'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -43,5 +44,6 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
+
 end
 

@@ -1,9 +1,39 @@
 class BillsController < ApplicationController
-  # GET /bills
-  # GET /bills.xml
+  before_filter :authenticate
+  before_filter :change_words, :only => [:create, :edit]
+
+  #before_filter :remove_trailing_zeros, :only => [:create]
+
   def index
     @title = "Bills"
+    @monthly_bills = []
+    @weekly_bills = []
+    year = Time.now.strftime("%Y").to_i
+    month = Time.now.strftime("%m").to_i
+
+
     @bills = Bill.all
+
+    @bills.each do |bill|
+      freq = bill.frequency
+      weekly_bill_dates = []
+
+      if freq == 'monthly'
+        @monthly_bills << bill
+      elsif freq == 'weekly'
+        logger.info "weekly - getting dates"
+        weekly_bill_dates = bill_dates(bill.weekday.to_i,year,month)
+        weekly_bill_dates.each do |d|
+          logger.info "Bill date: #{d}"
+        end
+        @weekly_bills << bill
+      elsif freq == "bimonthly"
+        @bimonthly_bill << bill
+      end
+
+
+
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -11,8 +41,6 @@ class BillsController < ApplicationController
     end
   end
 
-  # GET /bills/1
-  # GET /bills/1.xml
   def show
     @bill = Bill.find(params[:id])
 
@@ -22,8 +50,6 @@ class BillsController < ApplicationController
     end
   end
 
-  # GET /bills/new
-  # GET /bills/new.xml
   def new
     @bill = Bill.new
 
@@ -33,15 +59,12 @@ class BillsController < ApplicationController
     end
   end
 
-  # GET /bills/1/edit
   def edit
     @bill = Bill.find(params[:id])
   end
 
-  # POST /bills
-  # POST /bills.xml
   def create
-    @bill = Bill.new(params[:bill])
+    @bill = current_user.bills.build(params[:bill])
 
     respond_to do |format|
       if @bill.save
@@ -54,8 +77,6 @@ class BillsController < ApplicationController
     end
   end
 
-  # PUT /bills/1
-  # PUT /bills/1.xml
   def update
     @bill = Bill.find(params[:id])
 
@@ -70,8 +91,6 @@ class BillsController < ApplicationController
     end
   end
 
-  # DELETE /bills/1
-  # DELETE /bills/1.xml
   def destroy
     @bill = Bill.find(params[:id])
     @bill.destroy
@@ -81,5 +100,20 @@ class BillsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def bill_occurance
+
+
+  end
+
+  def bill_dates(weekday,year,month)
+    date_arr = []
+    (Date.new(year,month,1) .. Date.new(year,month,-1)).each do |d|
+      d = d.to_s(:humanize_date)
+      date_arr << d if d.to_date.strftime("%w").to_i == weekday.to_i
+    end
+    return date_arr
+  end
+
 end
 

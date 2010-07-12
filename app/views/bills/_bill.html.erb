@@ -1,0 +1,5 @@
+<li>
+	<%= h(bill.name).capitalize %> ($<%= bill.amount %>) occurs <%= bill.frequency.capitalize %><br />
+	Created <%= time_ago_in_words(bill.created_at) %> ago.
+</li>
+

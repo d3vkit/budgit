@@ -30,6 +30,44 @@ body {
   border-radius:         5px;
 }
 
+.round-top {
+  -moz-border-radius:    5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+  border-radius:         5px 5px 0 0;
+}
+
+.round-top-left {
+  -moz-border-radius:    5px 0 0 0;
+  -webkit-border-radius: 5px 0 0 0;
+  border-radius:         5px 0 0 0;
+}
+
+.round-top-right {
+  -moz-border-radius:    0 5px 0 0;
+  -webkit-border-radius: 0 5px 0 0;
+  border-radius:         0 5px 0 0;
+}
+
+.round-bottom {
+  -moz-border-radius:    0 0 5px 5px;
+  -webkit-border-radius: 0 0 5px 5px;
+  border-radius:         0 0 5px 5px;
+}
+
+.round-bottom-left {
+  -moz-border-radius:    0 0 5px 0;
+  -webkit-border-radius: 0 0 5px 0;
+  border-radius:         0 0 5px 0;
+}
+
+.round-bottom-right {
+  -moz-border-radius:    0 0 0 5px;
+  -webkit-border-radius: 0 0 0 5px;
+  border-radius:         0 0 0 5px;
+}
+
+
+
 #footer {
   text-align: center;
   margin-top: 10px;
@@ -65,5 +103,22 @@ ul.users {
 
 .users li {
   list-style: none;
+}
+
+/* floats */
+.fleft {
+  float: left;
+}
+
+.fright {
+  float: right;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
 

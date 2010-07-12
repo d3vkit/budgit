@@ -1,0 +1,17 @@
+Continuous
+==========
+
+ASimple extensions to the string class.
+
+
+Example
+=======
+
+Continuous
+
+string.continuous
+
+Useful for transforming time periods that repeat, ie week => weekly, day => daily
+
+Copyright (c) 2010 Thomas Brooks, released under the MIT license
+

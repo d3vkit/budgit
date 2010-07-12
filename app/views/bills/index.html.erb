@@ -1,24 +1,59 @@
-<h1>Listing bills</h1>
+<h1>Bills</h1>
+<div id="show_bills_container">
+	<% @bills.each do |bill| %>
+		<%
+			curr_month = Time.now.strftime("%m")
+			curr_year = Time.now.strftime("%Y")
+			show_bill = false
+		%>
+		<%
+			if bill.frequency == "monthly"
+				date_of_bill = Date.new(curr_year.to_i, curr_month.to_i, bill.day.to_i)
+				show_bill = true
+			elsif bill.frequency == 'weekly'
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Occurance</th>
-    <th>Amount</th>
-  </tr>
+			elsif bill.frequency == "every 2 weeks"
+				if current_week_is_even?
+					if bill.alternator == 'even'
+						show_bill = true
+						logger.info "is even"
+						logger.info "weekday: #{bill.weekday}"
+						date_of_bill = Chronic.parse('this '+bill.weekday).to_date
+					end
+				else
+					if bill.alternator == 'odd'
+						show_bill = true
+						logger.info "is odd"
+						logger.info "weekday: #{bill.weekday}"
+						date_of_bill = Chronic.parse('this '+bill.weekday).to_date
+					end
+				end
+			end
+		%>
 
-<% @bills.each do |bill| %>
-  <tr>
-    <td><%=h bill.name %></td>
-    <td><%=h bill.occurance %></td>
-    <td><%=h bill.amount %></td>
-    <td><%= link_to 'Show', bill %></td>
-    <td><%= link_to 'Edit', edit_bill_path(bill) %></td>
-    <td><%= link_to 'Destroy', bill, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
+		<% if show_bill %>
+		  <div id="bill_<%=- bill.id -%>" class="ind_bill round">
+				<div class="bill_date fleft round">
+					<%= date_of_bill.to_s(:humanize_date) %>
+				</div>
+				<div class="bill_name fleft round-top-left">
+					<%= h bill.name.titleize %>
+				</div>
+				<div class="bill_amount round-top-right">
+					$<%= h bill.amount %>
+				</div>
+				<br class="clearfix" />
+				<div class="bill_options">
+					<%= link_to 'Show', bill %>
+					<%= link_to 'Edit', edit_bill_path(bill) %>
+					<%= link_to 'Destroy', bill, :confirm => 'Are you sure?', :method => :delete %>
+					Frequency: <%= h bill.frequency %>
+				</div>
+			</div>
+			<br />
+		<% end %>
+	<% end %>
+</div>
 
 <%= link_to 'New bill', new_bill_path %>
+

@@ -16,8 +16,8 @@ class User < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 10
 
-  has_many :incomes
-  has_many :bills
+  has_many :incomes, :dependent => :destroy
+  has_many :bills, :dependent => :destroy
 
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation

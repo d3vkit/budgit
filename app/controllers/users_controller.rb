@@ -2,7 +2,6 @@ class UsersController < ApplicationController
   before_filter :authenticate, :only => [:edit, :update]
   before_filter :correct_user, :only => [:edit, :update]
   before_filter :admin_user, :only => [:index, :destroy]
-  #before_filter :store_location
 
   def index
     @title = "All Users"
@@ -16,7 +15,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @title = @user.name
+    @bills = @user.bills.find(:all)
+    @title = CGI.escapeHTML(@user.name)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
     @title = "Settings"
 
     respond_to do |format|
-      if !params[:user][:admin].blank? && admin_user
+      if !params[:user][:admin].blank? && current_user.admin?
         @user.admin = params[:user][:admin]
         @user.save
       end
@@ -80,10 +80,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-    def authenticate
-      deny_access unless signed_in?
-    end
 
     def correct_user
       @user = User.find(params[:id])

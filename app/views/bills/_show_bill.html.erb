@@ -1,0 +1,20 @@
+<div id="bill_<%=- bill.id -%>" class="ind_bill round">
+	<div class="bill_date fleft round">
+		<%= date_of_bill.to_s(:humanize_date) %>
+	</div>
+	<div class="bill_name fleft round-top-left">
+		<%= h bill.name.titleize %>
+	</div>
+	<div class="bill_amount round-top-right">
+		$<%= h bill.amount %>
+	</div>
+	<br class="clearfix" />
+	<div class="bill_options">
+		<%= link_to 'Show', bill %>
+		<%= link_to 'Edit', edit_bill_path(bill) %>
+		<%= link_to 'Destroy', bill, :confirm => 'Are you sure?', :method => :delete %>
+		Frequency: <%= h bill.frequency %>
+	</div>
+</div>
+<br />
+

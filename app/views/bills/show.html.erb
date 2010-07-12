@@ -1,11 +1,16 @@
 <p>
   <b>Name:</b>
-  <%=h @bill.name %>
+  <%=h @bill.name.titleize %>
 </p>
 
 <p>
-  <b>Occurance:</b>
-  <%=h @bill.occurance %>
+  <b>Frequency:</b>
+  <%=h @bill.frequency.titleize %>
+</p>
+
+<p>
+	<b>Dates</b>
+	<!-- date code here -->
 </p>
 
 <p>
@@ -15,5 +20,5 @@
 
 
 <%= link_to 'Edit', edit_bill_path(@bill) %> |
-<%= link_to 'Back', :back %>
+<%= link_to 'Back', bills_path %>
 
