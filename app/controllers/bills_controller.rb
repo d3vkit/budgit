@@ -1,6 +1,6 @@
 class BillsController < ApplicationController
   before_filter :authenticate
-  before_filter :change_words, :only => [:create, :edit]
+  before_filter :change_words, :only => [:create, :update]
 
   #before_filter :remove_trailing_zeros, :only => [:create]
 
