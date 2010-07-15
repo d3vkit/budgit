@@ -39,8 +39,9 @@
 			</span>
 		</p>
 		<p id="new_bill_alternator" class="bill-date">
-			<%= select :bill, :alternator, options_for_select_with_attributes( [[ "Will Happen This Week", this_week, { :id => "alternate_this_week"}], ["Will Happen Next Week", next_week, { :id => "alternate_next_week"} ]] ) %>
-			<span class="hint">
+			<span id="alternate_this_week" style="display:none;"><%= this_week %></span>
+			<span id="alternate_next_week" style="display:none;"><%= next_week %></span>
+			<span id="alternator_hint" class="hint">
 				Is this bi<span class="alternator-type">week</span>ly bill going to occur this <span class="alternator-type">week</span> or next?
 				<span class="hint-pointer">&nbsp;</span>
 			</span>

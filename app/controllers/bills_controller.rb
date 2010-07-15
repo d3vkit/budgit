@@ -8,32 +8,9 @@ class BillsController < ApplicationController
     @title = "Bills"
     @monthly_bills = []
     @weekly_bills = []
-    year = Time.now.strftime("%Y").to_i
-    month = Time.now.strftime("%m").to_i
+    @current_month = Time.now.strftime("%m").to_i
 
-
-    @bills = Bill.all
-
-    @bills.each do |bill|
-      freq = bill.frequency
-      weekly_bill_dates = []
-
-      if freq == 'monthly'
-        @monthly_bills << bill
-      elsif freq == 'weekly'
-        logger.info "weekly - getting dates"
-        weekly_bill_dates = bill_dates(bill.weekday.to_i,year,month)
-        weekly_bill_dates.each do |d|
-          logger.info "Bill date: #{d}"
-        end
-        @weekly_bills << bill
-      elsif freq == "bimonthly"
-        @bimonthly_bill << bill
-      end
-
-
-
-    end
+    @bills = Bill.all(:order => 'day', :conditions => ['month = ?', @current_month])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -64,17 +41,83 @@ class BillsController < ApplicationController
   end
 
   def create
-    @bill = current_user.bills.build(params[:bill])
+    #All bills are saved in the recurring_bills table (once), and then are saved in the bills table (as much as necessary)
+    #Weekly bills dates are found and then a new bill is created for the current month for each date.
+    #Monthly bills are created for the year on the users given date.
+    #A cron will sweep the recurring bills table and create new bills when necessary.
+
+    is_weekly = false
+    is_monthly = false
+    @current_day = Time.now.strftime("%d").to_i
+    @current_month = Time.now.strftime("%m").to_i
+    @current_year = Time.now.strftime("%Y").to_i
+
+    @bill = current_user.recurring_bills.build(params[:bill])
+    @bill.year = @current_year
 
     respond_to do |format|
       if @bill.save
-        format.html { redirect_to(@bill, :notice => 'Bill was successfully created.') }
-        format.xml  { render :xml => @bill, :status => :created, :location => @bill }
+
+        if @bill.frequency =~ /weekly/i
+          if !params[:bill][:weekday].blank?
+            if params[:bill][:day].blank?
+              is_weekly = true
+            else
+              format.html { render :action => "new", :notice => 'Frequency was set to weekday, but a date was filled in - are you sure this isn\'t monthly?' }
+              format.xml  { render :xml => @bill.errors, :status => :unprocessable_entity }
+            end
+          else
+            format.html { render :action => "new", :notice => 'You must specify a weekday for weekly bills! (such as, Thursday)' }
+            format.xml  { render :xml => @bill.errors, :status => :unprocessable_entity }
+          end
+        elsif @bill.frequency =~ /monthly/i
+          is_monthly = true
+        elsif @bill.frequency =~ /every ([\d]+) week/i
+          is_biweekly = true
+        elsif @bill.frequency =~ /every ([\d]+) month/i
+          is_bimonthly = true
+        end
+
+        if is_weekly
+          weekday_dates = get_days_from_(@bill.weekday)
+          weekday_dates.each do |day|
+            this_day = day.to_date.strftime("%d")
+            new_bill = duplicate_recurring_bill(@bill,this_day)
+            new_bill.year = @current_year
+            if !new_bill.save
+              format.html { render :action => "new" }
+              format.xml  { render :xml => @bill.errors, :status => :unprocessable_entity }
+            end
+          end
+        elsif is_monthly
+          bill_months = (1..12).to_a
+          bill_months.each do |this_month|
+            new_bill = duplicate_recurring_bill(@bill,@bill.day,this_month)
+            new_bill.year = @current_year
+            if !new_bill.save
+              format.html { render :action => "new" }
+              format.xml  { render :xml => @bill.errors, :status => :unprocessable_entity }
+            end
+          end
+        end
+
+        format.html { redirect_to(bills_path, :notice => 'Bill was successfully created.') }
+        format.xml  { render :xml => bills_path, :status => :created, :location => @bill }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @bill.errors, :status => :unprocessable_entity }
       end
     end
+
+  end
+
+  def duplicate_recurring_bill(bill, day=nil, month=nil)
+    #for recurring bills, we duplicate the bill - weekly bills will have days passed in, and current month is used; monthly has month and day
+    new_bill = current_user.bills.build(bill.attributes)
+    new_bill.day = day.to_i if !day.blank?
+    new_bill.recurring_bill_id = bill.id
+    month.blank? ? new_bill.month = @current_month : new_bill.month = month.to_i
+    return new_bill
   end
 
   def update
@@ -103,17 +146,6 @@ class BillsController < ApplicationController
 
   def bill_occurance
 
-
   end
-
-  def bill_dates(weekday,year,month)
-    date_arr = []
-    (Date.new(year,month,1) .. Date.new(year,month,-1)).each do |d|
-      d = d.to_s(:humanize_date)
-      date_arr << d if d.to_date.strftime("%w").to_i == weekday.to_i
-    end
-    return date_arr
-  end
-
 end
 

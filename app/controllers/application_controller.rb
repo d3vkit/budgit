@@ -57,6 +57,7 @@ class ApplicationController < ActionController::Base
     params[:bill][:frequency] = @frequency.downcase
     params[:bill][:day] = new_day
     params[:bill][:weekday] = new_weekday
+    params[:bill][:month] = @month
   end
 
   def check_dates(freq)
@@ -80,19 +81,19 @@ class ApplicationController < ActionController::Base
   end
 
   def check_weekday(weekday)
-    if weekday =~ /(mon)/
+    if weekday =~ /mon/
       weekday = 1
-    elsif weekday =~ /(tue)/
+    elsif weekday =~ /tue/
         weekday = 2
-    elsif weekday =~ /(wed)/
+    elsif weekday =~ /wed/
         weekday = 3
-    elsif weekday =~ /(thurs)/
+    elsif weekday =~ /thur/ || weekday =~ /thrus/
         weekday = 4
-    elsif weekday =~ /(fri)/
+    elsif weekday =~ /fri/
         weekday = 5
-    elsif weekday =~ /(sat)/
+    elsif weekday =~ /sat/
         weekday = 6
-    elsif weekday =~ /(sun)/
+    elsif weekday =~ /sun/
         weekday = 7
     else
       flash_error_and_render("You must set a valid day of the week (ie, Wednesday)")
@@ -100,12 +101,24 @@ class ApplicationController < ActionController::Base
   end
 
   def check_days(day)
-    #Change Dates into standard format (The 23rd, the 30th == 23,30)
-    return day = day.gsub!(/[\D]+/,"").to_i
+    #Change Dates into standard format (The 23rd, the 30th == 23, 30)
+    if day =~ /[\D]*([\d])[\D]*/
+      day = $1
+    else
+      day = day.words_to_numbers
+    end
+  end
 
-    #dates.each do |date|
-    #  date.gsub!(/[\D]+/,"").to_i
-    #end
+  def get_days_from_(weekday)
+    date_arr = []
+    year = Time.now.strftime("%Y").to_i
+    month = Time.now.strftime("%m").to_i
+
+    (Date.new(year,month,1) .. Date.new(year,month,-1)).each do |d|
+      d = d.to_s(:humanize_date)
+      date_arr << d if d.to_date.strftime("%w").to_i == weekday.to_i
+    end
+    return date_arr
   end
 
   def flash_error_and_render(error)

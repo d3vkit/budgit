@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :bills
+  map.resources :recurring_bills
   map.resources :incomes
   map.resources :users
   map.resources :sessions, :only => [:new, :create, :destroy]

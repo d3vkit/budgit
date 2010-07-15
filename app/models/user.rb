@@ -17,7 +17,8 @@ class User < ActiveRecord::Base
   @@per_page = 10
 
   has_many :incomes, :dependent => :destroy
-  has_many :bills, :dependent => :destroy
+  has_many :bills, :through => :recurring_bills, :dependent => :destroy
+  has_many :recurring_bills, :dependent => :destroy
 
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation

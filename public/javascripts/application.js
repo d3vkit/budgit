@@ -22,8 +22,8 @@ $(function() {
 function check_frequency_val(el) {
   var bill_date_arr = ['#new_bill_weekday','#new_bill_day','#new_bill_month','#new_bill_alternator'];
   var current = '';
-  var this_week = $('#alternate_this_week').val();
-  var next_week = $('#alternate_next_week').val();
+  var this_week = $('#alternate_this_week').html();
+  var next_week = $('#alternate_next_week').html();
 
   var d = new Date();
   var month = d.getMonth();
@@ -44,13 +44,13 @@ function check_frequency_val(el) {
     }
     if(val.match(/[a-zA-Z0-9]*(bi)/i) || val.match(/every 2/i)) {
       if(!$("#new_bill_alternator").hasClass("visible-date")) {
+        $('#alternator_hint').before('<select id="bill_alternator" name="bill\[alternator\]"><option id="alternate_this_week" value="'+this_week+'">Will Happen This Week</option><option id="alternate_next_week" value="'+next_week+'">Will Happen Next Week</option></select>');
         $('#new_bill_alternator').addClass('visible-date');
-        $('.alternator-type').each(function() { $(this).html('week'); });
-        $('#bill_alternator').html('<option id="alternate_next_week" value="'+next_week+'">Will Happen Next Week</option><option id="alternate_this_week" value="'+this_week+'">Will Happen This Week</option>');
         $('#new_bill_alternator').slideToggle();
       }
     } else if($("#new_bill_alternator").hasClass("visible-date")) {
       $("#new_bill_alternator").removeClass("visible-date");
+      $('#bill_alternator').remove();
       $("#new_bill_alternator").slideUp();
     }
   } else if(val.match(/[a-zA-Z0-9]*(month)/i)) {
@@ -60,13 +60,12 @@ function check_frequency_val(el) {
     }
     if(val.match(/[a-zA-Z0-9]*(bi)/i) || val.match(/every 2/i)) {
       if(!$("#new_bill_alternator").hasClass("visible-date")) {
-        $('#new_bill_alternator').addClass('visible-date');
-        $('.alternator-type').each(function() { $(this).html('month'); });
-        $('#bill_alternator').html('<option id="alternate_next_week" value="'+next_month+'">Will Happen Next Month</option><option id="alternate_this_week" value="'+this_month+'">Will Happen This Month</option>');
+        $('#alternator_hint').before('<select id="bill_alternator" name="bill\[alternator\]"><option id="alternate_this_week" value="'+this_week+'">Will Happen This Week</option><option id="alternate_next_week" value="'+next_week+'">Will Happen Next Week</option></select>');
         $('#new_bill_alternator').slideToggle();
       }
     } else if($("#new_bill_alternator").hasClass("visible-date")) {
       $("#new_bill_alternator").removeClass("visible-date");
+      $('#bill_alternator').remove();
       $("#new_bill_alternator").slideUp();
     }
   } else if(val.match(/[a-zA-Z0-9]*(year)/i)) {
@@ -79,6 +78,7 @@ function check_frequency_val(el) {
       $('#new_bill_month').slideToggle();
     }
   } else {
+    $('#bill_alternator').remove();
     for(var i in bill_date_arr) {
       current = bill_date_arr[i];
       if($(current).hasClass('visible-date')) {

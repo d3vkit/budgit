@@ -2,16 +2,15 @@
 <div id="show_bills_container">
 	<% @bills.each do |bill| %>
 		<%
-			curr_month = Time.now.strftime("%m")
-			curr_year = Time.now.strftime("%Y")
+			curr_month = Time.now.strftime("%m").to_i
+			curr_year = Time.now.strftime("%Y").to_i
 			show_bill = false
+			logger.info bill.day
 		%>
 		<%
-			if bill.frequency == "monthly"
-				date_of_bill = Date.new(curr_year.to_i, curr_month.to_i, bill.day.to_i)
+			if bill.frequency == "monthly" || bill.frequency == 'weekly'
+				date_of_bill = Date.new(bill.year.to_i, bill.month.to_i, bill.day.to_i)
 				show_bill = true
-			elsif bill.frequency == 'weekly'
-
 			elsif bill.frequency == "every 2 weeks"
 				if current_week_is_even?
 					if bill.alternator == 'even'
