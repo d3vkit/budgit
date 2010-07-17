@@ -1,11 +1,12 @@
 $(function() {
-  if($('#new_bill_container').length) {
+  //New/Edit Bill Page
+  if($('#new_bill_container').length || $('#edit_bill_container').length) {
     $('.hint').prev().each(function() {
       $(this).focus(function() {
-        $(this).next('span').css('display','inline');
+        $(this).next('span').fadeIn();
       });
       $(this).blur(function() {
-        $(this).next().css('display','none');
+        $(this).next().fadeOut();
       });
     });
 
@@ -17,10 +18,36 @@ $(function() {
     }
     $('#bill_frequency').keyup(function() { check_frequency_val('#bill_frequency'); });
   }
+
+
+  //Edit Bill Page
+  if($('#edit_bill_container').length) {
+      $('#bill_freq').hide();
+
+      var day = $('#bill_weekday').val();
+      $('#bill_weekday').val(convert_day_to_weekday(day));
+
+  }
+
+  //Show Bill Page
+  if($('#show_bills_container').length) {
+    $('.bill_options_container').each(function() {
+      //$(this).hide();
+    });
+    $('.ind_bill').each(function() {
+      $(this).hover(function() {
+        $(this).children('.bill_options').fadeIn();
+      },
+      function() {
+        $(this).children('.bill_options').fadeOut();
+      });
+    });
+  }
 });
 
 function check_frequency_val(el) {
-  var bill_date_arr = ['#new_bill_weekday','#new_bill_day','#new_bill_month','#new_bill_alternator'];
+  var action = $('#bill_action').html();
+  var bill_date_arr = ['#'+action+'_bill_weekday','#'+action+'_bill_day','#'+action+'_bill_month','#'+action+'_bill_alternator'];
   var current = '';
   var this_week = $('#alternate_this_week').html();
   var next_week = $('#alternate_next_week').html();
@@ -38,47 +65,64 @@ function check_frequency_val(el) {
 
   var val = $(el).val();
   if(val.match(/[a-zA-Z0-9]*(week)/i)) {
-    if(!$("#new_bill_weekday").hasClass("visible-date")) {
-      $('#new_bill_weekday').addClass('visible-date');
-      $('#new_bill_weekday').slideToggle();
+    if(!$('#'+action+'_new_bill_weekday').hasClass('visible-date')) {
+      $('#'+action+'_bill_weekday').addClass('visible-date');
+      $('#'+action+'_bill_weekday').slideToggle();
     }
     if(val.match(/[a-zA-Z0-9]*(bi)/i) || val.match(/every 2/i)) {
-      if(!$("#new_bill_alternator").hasClass("visible-date")) {
-        $('#alternator_hint').before('<select id="bill_alternator" name="bill\[alternator\]"><option id="alternate_this_week" value="'+this_week+'">Will Happen This Week</option><option id="alternate_next_week" value="'+next_week+'">Will Happen Next Week</option></select>');
-        $('#new_bill_alternator').addClass('visible-date');
-        $('#new_bill_alternator').slideToggle();
+      if(!$('#'+action+'_bill_alternator').hasClass('visible-date')) {
+        if(action != 'edit') {
+          $('#alternator_hint').before('<select id="'+action+'_bill_alternator" name="'+action+'_bill\[alternator\]"><option id="alternate_this_week" value="'+this_week+'">Will Happen This Week</option><option id="alternate_next_week" value="'+next_week+'">Will Happen Next Week</option></select>');
+        }
+        $('#'+action+'_bill_alternator').focus(function() {
+          $(this).next('.hint').fadeIn();
+        });
+        $('#'+action+'_bill_alternator').blur(function() {
+          $(this).next('.hint').fadeOut();
+        });
+        $('#'+action+'_bill_alternator').addClass('visible-date');
+        $('#'+action+'_bill_alternator').slideToggle();
       }
-    } else if($("#new_bill_alternator").hasClass("visible-date")) {
-      $("#new_bill_alternator").removeClass("visible-date");
-      $('#bill_alternator').remove();
-      $("#new_bill_alternator").slideUp();
+    } else if($('#'+action+'_bill_alternator').hasClass('visible-date')) {
+      $('#'+action+'_bill_alternator').removeClass('visible-date');
+      $('#'+action+'_bill_alternator').remove();
+      $('#'+action+'_bill_alternator').slideUp();
     }
   } else if(val.match(/[a-zA-Z0-9]*(month)/i)) {
-    if(!$("#new_bill_day").hasClass("visible-date")) {
-      $('#new_bill_day').addClass('visible-date');
-      $('#new_bill_day').slideToggle();
+    if(!$('#'+action+'_bill_day').hasClass('visible-date')) {
+      $('#'+action+'_bill_day').addClass('visible-date');
+      $('#'+action+'_bill_day').slideToggle();
     }
     if(val.match(/[a-zA-Z0-9]*(bi)/i) || val.match(/every 2/i)) {
-      if(!$("#new_bill_alternator").hasClass("visible-date")) {
-        $('#alternator_hint').before('<select id="bill_alternator" name="bill\[alternator\]"><option id="alternate_this_week" value="'+this_week+'">Will Happen This Week</option><option id="alternate_next_week" value="'+next_week+'">Will Happen Next Week</option></select>');
-        $('#new_bill_alternator').slideToggle();
+      if(!$('#'+action+'_bill_alternator').hasClass('visible-date')) {
+        if(action != 'edit') {
+          $('#alternator_hint').before('<select id="'+action+'_bill_alternator" name="'+action+'_bill\[alternator\]"><option id="alternate_this_week" value="'+this_week+'">Will Happen This Week</option><option id="alternate_next_week" value="'+next_week+'">Will Happen Next Week</option></select>');
+        }
+        $('#'+action+'_bill_alternator').focus(function() {
+          $(this).next('.hint').fadeIn();
+        });
+        $('#'+action+'_bill_alternator').blur(function() {
+          $(this).next('.hint').fadeOut();
+        });
+        $('#'+action+'_bill_alternator').addClass('visible-date');
+        $('#'+action+'_bill_alternator').slideToggle();
       }
-    } else if($("#new_bill_alternator").hasClass("visible-date")) {
-      $("#new_bill_alternator").removeClass("visible-date");
-      $('#bill_alternator').remove();
-      $("#new_bill_alternator").slideUp();
+    } else if($('#'+action+'_bill_alternator').hasClass('visible-date')) {
+      $('#'+action+'_bill_alternator').removeClass('visible-date');
+      $('#'+action+'_bill_alternator').remove();
+      $('#'+action+'_bill_alternator').slideUp();
     }
   } else if(val.match(/[a-zA-Z0-9]*(year)/i)) {
-    if(!$("#new_bill_day").hasClass("visible-date")) {
-      $('#new_bill_day').addClass('visible-date');
-      $('#new_bill_day').slideToggle();
+    if(!$('#'+action+'_bill_day').hasClass('visible-date')) {
+      $('#'+action+'_bill_day').addClass('visible-date');
+      $('#'+action+'_bill_day').slideToggle();
     }
-    if(!$("#new_bill_month").hasClass("visible-date")) {
-      $('#new_bill_month').addClass('visible-date');
-      $('#new_bill_month').slideToggle();
+    if(!$('#'+action+'_bill_month').hasClass('visible-date')) {
+      $('#'+action+'_bill_month').addClass('visible-date');
+      $('#'+action+'_bill_month').slideToggle();
     }
   } else {
-    $('#bill_alternator').remove();
+    $('#'+action+'_bill_alternator').remove();
     for(var i in bill_date_arr) {
       current = bill_date_arr[i];
       if($(current).hasClass('visible-date')) {
@@ -86,6 +130,32 @@ function check_frequency_val(el) {
         $(current).slideUp();
       }
     }
+  }
+}
+
+function convert_day_to_weekday(day) {
+  switch(day) {
+    case '1':
+      return "Monday";
+      break;
+    case '2':
+      return "Tuesday";
+      break;
+    case '3':
+      return "Wednesday";
+      break;
+    case '4':
+      return "Thursday";
+      break;
+    case '5':
+      return "Friday";
+      break;
+    case '6':
+      return "Saturday";
+      break;
+    case '7':
+      return "Sunday";
+      break;
   }
 }
 

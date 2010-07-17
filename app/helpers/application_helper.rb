@@ -14,22 +14,6 @@ module ApplicationHelper
     image_tag("logo.png", :alt => "budgit_logo", :title => "Budgit", :class => "round")
   end
 
-  def is_odd(x)
-    x % 2 != 0
-  end
-
-  def current_month_is_even?
-    month = Time.now.strftime("%m")
-    return false if is_odd(month)
-    return true
-  end
-
-  def current_week_is_even?
-    week = Time.now.strftime("%W")
-    return false if is_odd(week)
-    return true
-  end
-
   def options_for_select_with_attributes(container, selected = nil)
     container = container.to_a if Hash === container
     selected, disabled = extract_selected_and_disabled(selected)

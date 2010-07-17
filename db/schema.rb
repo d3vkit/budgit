@@ -9,25 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100714072936) do
+ActiveRecord::Schema.define(:version => 20100717221228) do
 
-  create_table "bills", :force => true do |t|
-    t.string   "name"
-    t.string   "frequency"
-    t.integer  "amount"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "day"
-    t.string   "month"
-    t.string   "weekday"
-    t.string   "alternator"
-    t.integer  "year"
-    t.integer  "recurring_bill_id"
-  end
+# Could not dump table "bills" because of following StandardError
+#   Unknown type 'real' for column 'amount'
 
   create_table "incomes", :force => true do |t|
     t.string   "name"
-    t.string   "occurance"
+    t.string   "frequency"
     t.integer  "amount"
     t.string   "type"
     t.datetime "created_at"
@@ -35,19 +24,8 @@ ActiveRecord::Schema.define(:version => 20100714072936) do
     t.integer  "user_id"
   end
 
-  create_table "recurring_bills", :force => true do |t|
-    t.string   "name"
-    t.string   "frequency"
-    t.string   "amount"
-    t.string   "month"
-    t.string   "weekday"
-    t.string   "alternator"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "day"
-    t.integer  "year"
-  end
+# Could not dump table "recurring_bills" because of following StandardError
+#   Unknown type 'real' for column 'amount'
 
   create_table "users", :force => true do |t|
     t.string   "name"

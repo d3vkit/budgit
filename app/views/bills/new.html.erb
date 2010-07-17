@@ -1,79 +1,8 @@
-<% # is it an even or odd week? %>
-<% if current_week_is_even? %>
-	<% this_week = "even" %>
-	<% next_week = "odd" %>
-<% else %>
-	<% this_week = "odd" %>
-	<% next_week = "even" %>
-<% end %>
-
 <div id="new_bill_container" style="position: relative;">
 	<h1>New bill</h1>
 	<p>Fill out each field below for the bill you would like to add. These magical fields can read most human expressions - try phrases like "Each Month" or "Biweekly" - the form knows what to do.</p>
 
-	<% form_for(@bill) do |f| %>
-		<%= f.error_messages %>
-
-		<p>
-		  <%= f.label :name %><br />
-		  <%= f.text_field :name, { :autocomplete => 'off' } %>
-		  <span class="hint">
-		  	Name This Bill
-		  	<span class="hint-pointer">&nbsp;</span>
-		  </span>
-		</p>
-		<p>
-		  <%= f.label :frequency %><br />
-		  <%= f.text_field :frequency, { :autocomplete => 'off' } %>
-		  <span class="hint">
-		  	How often does this bill occur? Monthly, Each Week, Once a Year, etc
-		  	<span class="hint-pointer">&nbsp;</span>
-		  </span>
-		</p>
-		<p id="new_bill_weekday" class="bill-date">
-			<%= f.label :weekday %><br />
-			<%= f.text_field :weekday, { :autocomplete => 'off' } %>
-			<span class="hint">
-				On which day does this bill occur? (Por Exemple, "Every Tuesday")
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-		<p id="new_bill_alternator" class="bill-date">
-			<span id="alternate_this_week" style="display:none;"><%= this_week %></span>
-			<span id="alternate_next_week" style="display:none;"><%= next_week %></span>
-			<span id="alternator_hint" class="hint">
-				Is this bi<span class="alternator-type">week</span>ly bill going to occur this <span class="alternator-type">week</span> or next?
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-		<p id="new_bill_month" class="bill-date">
-			<%= f.label :month %><br />
-			<%= f.text_field :month, { :autocomplete => 'off' } %>
-			<span class="hint">
-				In which month does this bill occur? (You might write "January" or "Oct")
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-		<p id="new_bill_day" class="bill-date">
-			<%= f.label :day %><br />
-			<%= f.text_field :day, { :autocomplete => 'off' } %>
-			<span class="hint">
-				On which day does this bill occur? (Por Ejemplo, "On the 15th")
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-		<p>
-		  <%= f.label :amount %><br />
-		  <%= f.text_field :amount, { :autocomplete => 'off' } %>
-		  <span class="hint">
-				How much is this bill? Examples are 200, or 56.45
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-		<p>
-		  <%= f.submit 'Create' %>
-		</p>
-	<% end %>
+	<%= render :partial => "form" %>
 
 	<%= link_to 'Back', bills_path %>
 </div>

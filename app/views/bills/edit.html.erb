@@ -1,25 +1,9 @@
-<h1>Editing bill</h1>
+<div id="edit_bill_container" style="position: relative;">
+	<h1>Edit Bill</h1>
+	<p>This bill occurs <%= @bill.frequency.titleize %> [<%= link_to "change", edit_recurring_bill_path(@bill.recurring_bill_id) %>]</p>
 
-<% form_for(@bill) do |f| %>
-  <%= f.error_messages %>
+	<%= render :partial => 'form' %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :frequency %><br />
-    <%= f.text_field :frequency %>
-  </p>
-  <p>
-    <%= f.label :amount %><br />
-    <%= f.text_field :amount %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', @bill %> |
-<%= link_to 'Back', :back %>
+	<%= link_to 'Back', bills_path %>
+</div>
 

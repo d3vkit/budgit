@@ -44,7 +44,7 @@ module StringExtensions
     number = ''
     ends_in_y = false
 
-    new_self = self.gsub!('-',' ')
+    new_self = self.gsub('-',' ').downcase
 
     split_words = new_self.split(' ')
     split_words.each do |word|

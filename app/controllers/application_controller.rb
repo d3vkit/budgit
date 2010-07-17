@@ -10,6 +10,21 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
 
+  def define_dates
+    @current_day = Time.now.strftime("%d").to_i
+    @current_week = Time.now.strftime("%W").to_i
+    @current_month = Time.now.strftime("%m").to_i
+    @current_year = Time.now.strftime("%Y").to_i
+
+    if week_is_even?(@current_week)
+      @this_week = "even"
+      @next_week = "odd"
+    else
+      @this_week = "odd"
+      @next_week = "even"
+    end
+  end
+
   def change_words
     if params[:bill]
       change_bill_words
@@ -55,8 +70,8 @@ class ApplicationController < ActionController::Base
     new_weekday,new_day = check_dates(@frequency)
 
     params[:bill][:frequency] = @frequency.downcase
-    params[:bill][:day] = new_day
-    params[:bill][:weekday] = new_weekday
+    params[:bill][:day] = new_day.to_i if new_day.to_i != 0
+    params[:bill][:weekday] = new_weekday.to_i if new_weekday.to_i != 0
     params[:bill][:month] = @month
   end
 
@@ -109,7 +124,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def get_days_from_(weekday)
+  def get_dates_from_(weekday)
     date_arr = []
     year = Time.now.strftime("%Y").to_i
     month = Time.now.strftime("%m").to_i
@@ -129,6 +144,22 @@ class ApplicationController < ActionController::Base
     elsif @commit == "update"
       render :action => :edit
     end
+  end
+
+  def is_odd(x)
+    x % 2 != 0
+  end
+
+  def month_is_even?(month=nil)
+    month = Time.now.strftime("%m") if month.blank?
+    return false if is_odd(month)
+    return true
+  end
+
+  def week_is_even?(week=nil)
+    week = Time.now.strftime("%W") if week.blank?
+    return false if is_odd(week)
+    return true
   end
 
 end

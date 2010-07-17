@@ -4,16 +4,44 @@
 
 #show_bills_container {
   font-size: 2em;
+  border: 1px solid black;
+  width: 600px;
+}
+
+#show_bills_container :first-child {
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+}
+
+#show_bills_container :last-child {
+  -moz-border-radius: 0 0 5px 5px;
+  -webkit-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
 }
 
 #show_bills_container .ind_bill {
+  color: #fff;
+  border-bottom: 1px solid black;
+  position: relative;
+}
+
+#show_bills_container .ind_bill:last-child {
   width: 600px;
-  border: 1px solid black;
+  border-bottom: 0;
   color: #fff;
 }
 
-#show_bills_container .bill_name, #show_bills_container .bill_amount {
+#show_bills_container .bill_name a, #show_bills_container .bill_amount {
   padding: 30px;
+}
+
+#show_bills_container .bill_name a {
+  display: block;
+}
+
+#show_bills_container .bill_name a :hover{
+  cursor: pointer;
 }
 
 #show_bills_container .bill_date {
@@ -26,16 +54,28 @@
 #show_bills_container .bill_name {
   width: 40%;
   background: #AA2B31;
+
 }
 
 #show_bills_container .bill_amount {
   background: #333;
   padding-left: 430px;
+  -moz-border-radius: 0;
 }
-
 
 #show_bills_container .bill_options {
   font-size: .5em;
-  padding-left: 10px;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  height: 100%;
+  -moz-border-radius: 0;
+  display: none;
+}
+
+#show_bills_container .bill_options ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px 10px 0 10px;
 }
 

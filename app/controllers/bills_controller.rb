@@ -1,16 +1,13 @@
 class BillsController < ApplicationController
   before_filter :authenticate
   before_filter :change_words, :only => [:create, :update]
+  before_filter :define_dates
 
   #before_filter :remove_trailing_zeros, :only => [:create]
 
   def index
     @title = "Bills"
-    @monthly_bills = []
-    @weekly_bills = []
-    @current_month = Time.now.strftime("%m").to_i
-
-    @bills = Bill.all(:order => 'day', :conditions => ['month = ?', @current_month])
+    @bills = Bill.all(:order => 'day ASC', :conditions => ['month = ?', @current_month])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -48,16 +45,12 @@ class BillsController < ApplicationController
 
     is_weekly = false
     is_monthly = false
-    @current_day = Time.now.strftime("%d").to_i
-    @current_month = Time.now.strftime("%m").to_i
-    @current_year = Time.now.strftime("%Y").to_i
 
     @bill = current_user.recurring_bills.build(params[:bill])
     @bill.year = @current_year
 
     respond_to do |format|
       if @bill.save
-
         if @bill.frequency =~ /weekly/i
           if !params[:bill][:weekday].blank?
             if params[:bill][:day].blank?
@@ -72,21 +65,25 @@ class BillsController < ApplicationController
           end
         elsif @bill.frequency =~ /monthly/i
           is_monthly = true
-        elsif @bill.frequency =~ /every ([\d]+) week/i
+        elsif @bill.frequency =~ /every 2 weeks/i
           is_biweekly = true
-        elsif @bill.frequency =~ /every ([\d]+) month/i
+          @bill.alternator == @this_week ? use_this = true : use_this = false
+        elsif @bill.frequency =~ /every 2 months/i
           is_bimonthly = true
         end
 
-        if is_weekly
-          weekday_dates = get_days_from_(@bill.weekday)
+        if is_weekly || is_biweekly
+          weekday_dates = get_dates_from_(@bill.weekday)
           weekday_dates.each do |day|
-            this_day = day.to_date.strftime("%d")
-            new_bill = duplicate_recurring_bill(@bill,this_day)
-            new_bill.year = @current_year
-            if !new_bill.save
-              format.html { render :action => "new" }
-              format.xml  { render :xml => @bill.errors, :status => :unprocessable_entity }
+            week_in_year = day.to_time.strftime("%W").to_i
+            if week_is_even?(week_in_year) && @bill.alternator == 'even' || !week_is_even?(week_in_year) && @bill.alternator == 'odd'
+              logger.info "Saving new bill..."
+              this_day = day.to_date.strftime("%d")
+              new_bill = duplicate_recurring_bill(@bill,this_day)
+              new_bill.year = @current_year
+              new_bill.save
+            else
+              logger.info "Not making new bill..."
             end
           end
         elsif is_monthly
