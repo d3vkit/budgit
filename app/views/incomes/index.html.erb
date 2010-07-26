@@ -1,26 +1,45 @@
-<h1>Listing incomes</h1>
+<h1>Incomes</h1>
+<div id="show_incomes_container" class="item_container round">
+	<% @incomes.each do |income| %>
+		<% date_of_income = Date.new(income.year.to_i, income.month.to_i, income.day.to_i) %>
+		<% amount = format_currency(h income.amount) %>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Occurance</th>
-    <th>Amount</th>
-    <th>Type</th>
-  </tr>
+	  <div id="income_<%= income.id -%>" class="ind_item">
+			<div class="item_options">
+				<div style="position: relative;">
+					<ul>
+						<li><%= link_to_function image_tag('icons/edit.png', :class => "icon"), "confirm_action('#confirm_edit_#{income.id}')" %></li>
+						<li><%= link_to_function image_tag('icons/red-x.png', :class => "icon"), "confirm_action('#confirm_delete_#{income.id}')" %></li>
+					</ul>
+					<span id="confirm_edit_<%= income.id -%>" class="confirm confirm_edit round">
+						<%= link_to "Edit Single income", edit_income_path(income) %> |
+						<%= link_to "Edit All", edit_recurring_income_path(income.recurring_income.id) if !income.occurs_once %>
+						<span class="confirm-pointer">&nbsp;</span>
+					</span>
+					<span id="confirm_delete_<%= income.id -%>" class="confirm confirm_delete round">
+						<%= link_to "Delete Single income", income, :method => :delete %> |
+						<%= link_to "Delete All", recurring_income_path(income.recurring_income.id), :method => :delete if !income.occurs_once %>
+						<span class="confirm-pointer">&nbsp;</span>
+					</span>
+				</div>
+			</div>
+			<div class="item_date fleft">
+				<%= date_of_income.to_s(:humanize_date) %>
+			</div>
+			<div class="income_name item_name fleft">
 
-<% @incomes.each do |income| %>
-  <tr>
-    <td><%=h income.name %></td>
-    <td><%=h income.occurance %></td>
-    <td><%=h income.amount %></td>
-    <td><%=h income.type %></td>
-    <td><%= link_to 'Show', income %></td>
-    <td><%= link_to 'Edit', edit_income_path(income) %></td>
-    <td><%= link_to 'Destroy', income, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+				<% link_to income do %>
+					<span><%= h income.name.titleize %></span>
+				<% end %>
 
-<br />
+			</div>
+			<div class="item_amount">
+				$<%= amount %>
+			</div>
 
-<%= link_to 'New income', new_income_path %>
+		</div>
+	<% end %>
+</div>
+
+<%= link_to "New income", new_income_path %>
+

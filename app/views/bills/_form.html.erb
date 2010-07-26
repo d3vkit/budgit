@@ -1,71 +1,82 @@
 <% form_for(@bill) do |f| %>
-		<%= f.error_messages %>
-		<% do_what = params[:action] %>
+	<%= f.error_messages %>
+	<% do_what = params[:action] %>
 
-		<span id="bill_action" style="display: none;"><%= do_what %></span>
+	<p id="<%= do_what %>_bill_name">
+	  <%= f.label :name %><br />
+	  <%= f.text_field :name, { :autocomplete => 'off', :class => 'form_field' } %>
+	  <%= image_tag 'icons/red-x.png', :class => "icon error-icon" %>
+	  <span class="hint">
+	  	Name This Bill<br />
+	  	(15 Character Limit)
+	  	<span class="hint-pointer">&nbsp;</span>
+	  </span>
+	</p>
+	<p id="bill_freq">
+	  <%= f.label :frequency %><br />
+	  <%= f.text_field :frequency, { :autocomplete => 'off', :class => 'form_field' } %>
+	  <%= image_tag 'icons/red-x.png', :class => "icon error-icon" %>
+	  <span class="hint">
+	  	How often does this bill occur? Monthly, Each Week, Once a Year, etc
+	  	<span class="hint-pointer">&nbsp;</span>
+	  </span>
+	</p>
+	<p id="<%= do_what %>_bill_weekday">
+		<%= f.label :weekday %><br />
+		<% if do_what == 'edit' && !@bill.weekday.blank? %>
+			<% weekday = convert_day_to_weekday(@bill.weekday) %>
+			<%= f.text_field :weekday, { :autocomplete => 'off', :value => "#{weekday}", :class => 'form_field' } %>
+		<% else %>
+			<%= f.text_field :weekday, { :autocomplete => 'off', :class => 'form_field' } %>
+		<% end %>
+		<%= image_tag 'icons/red-x.png', :class => "icon error-icon" %>
+		<span class="hint">
+			On which day does this bill occur? (Some have written "On Tuesday")
+			<span class="hint-pointer">&nbsp;</span>
+		</span>
+	</p>
 
-		<p id="<%= do_what %>_bill_name">
-		  <%= f.label :name %><br />
-		  <%= f.text_field :name, { :autocomplete => 'off' } %>
-		  <span class="hint">
-		  	Name This Bill
-		  	<span class="hint-pointer">&nbsp;</span>
-		  </span>
-		</p>
-		<p id="bill_freq">
-		  <%= f.label :frequency %><br />
-		  <%= f.text_field :frequency, { :autocomplete => 'off' } %>
-		  <span class="hint">
-		  	How often does this bill occur? Monthly, Each Week, Once a Year, etc
-		  	<span class="hint-pointer">&nbsp;</span>
-		  </span>
-		</p>
-		<p id="<%= do_what %>_bill_weekday" class="bill-date">
-			<%= f.label :weekday %><br />
-			<%= f.text_field :weekday, { :autocomplete => 'off' } %>
-			<span class="hint">
-				On which day does this bill occur? (Some have written "On Tuesday")
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-
-		<p id="<%= do_what %>_bill_alternator" class="bill-date">
-			<% if do_what == 'edit' %>
-				<%= f.select(:alternator, options = {"Will Happen This Week" => "even", "Will Happen Next Week" => "odd"}) %>
-			<% end %>
-			<span id="alternate_this_week" style="display:none;"><%= @this_week %></span>
-			<span id="alternate_next_week" style="display:none;"><%= @next_week %></span>
-			<span id="alternator_hint" class="hint">
-				Is this bi<span class="alternator-type">week</span>ly bill going to occur this <span class="alternator-type">week</span> or next?
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-		<p id="<%= do_what %>_bill_month" class="bill-date">
-			<%= f.label :month %><br />
-			<%= f.text_field :month, { :autocomplete => 'off' } %>
-			<span class="hint">
-				In which month does this bill occur? (You might write "January" or "Oct")
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-		<p id="<%= do_what %>_bill_day" class="bill-date">
-			<%= f.label :day %><br />
-			<%= f.text_field :day, { :autocomplete => 'off', :value => "The #{@bill.day.numberst}" } %>
-			<span class="hint">
-				On which day does this bill occur? ("On the 15th")
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-		<p>
-		  <%= f.label :amount %><br />
-		  <%= f.text_field :amount, { :autocomplete => 'off' } %>
-		  <span class="hint">
-				How much is this bill? Examples are 200, or 56.45
-				<span class="hint-pointer">&nbsp;</span>
-			</span>
-		</p>
-		<p>
-		  <%= f.submit 'Create' %>
-		</p>
-	<% end %>
+	<p id="<%= do_what %>_bill_alternator" class="bill-date">
+		<%= f.select( :alternator, options = {"Will Happen This Week" => "even", "Will Happen Next Week" => "odd"}, { :class => 'form_field' } ) %>
+		<%= image_tag 'icons/large-check.png', :class => "icon okay-icon" %>
+		<span id="alternator_hint" class="hint">
+			Is this bi<span class="alternator-type">week</span>ly bill going to occur this <span class="alternator-type">week</span> or next?
+			<span class="hint-pointer">&nbsp;</span>
+		</span>
+	</p>
+	<p id="<%= do_what %>_bill_month" class="bill-date">
+		<%= f.label :month %><br />
+		<%= f.text_field :month, { :autocomplete => 'off', :class => 'form_field' } %>
+		<%= image_tag 'icons/red-x.png', :class => "icon error-icon" %>
+		<span class="hint">
+			In which month does this bill occur? (You might write "January" or "Oct")
+			<span class="hint-pointer">&nbsp;</span>
+		</span>
+	</p>
+	<p id="<%= do_what %>_bill_day" class="bill-date">
+		<%= f.label :day %><br />
+		<% if do_what == 'edit' && !@bill.day.blank? %>
+			<%= f.text_field :day, { :autocomplete => 'off', :value => "The #{@bill.day.to_i.numberst}", :class => 'form_field' } %>
+		<% else %>
+			<%= f.text_field :day, { :autocomplete => 'off', :class => 'form_field' } %>
+		<% end %>
+		<%= image_tag 'icons/red-x.png', :class => "icon error-icon" %>
+		<span class="hint">
+			On which day does this bill occur? ("On the 15th")
+			<span class="hint-pointer">&nbsp;</span>
+		</span>
+	</p>
+	<p>
+	  <%= f.label :amount %><br />
+	  <%= f.text_field :amount, { :autocomplete => 'off', :class => 'form_field' } %>
+	  <%= image_tag 'icons/red-x.png', :class => "icon error-icon" %>
+	  <span class="hint">
+			How much is this bill? Examples are 200, or 56.45
+			<span class="hint-pointer">&nbsp;</span>
+		</span>
+	</p>
+	<p>
+	  <%= f.submit @submit_txt %>
+	</p>
+<% end %>
 

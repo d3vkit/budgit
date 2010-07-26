@@ -1,0 +1,20 @@
+<h1>Editing pay_period</h1>
+
+<% form_for(@pay_period) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :begins %><br />
+    <%= f.datetime_select :begins %>
+  </p>
+  <p>
+    <%= f.label :ends %><br />
+    <%= f.datetime_select :ends %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @pay_period %> |
+<%= link_to 'Back', pay_periods_path %>

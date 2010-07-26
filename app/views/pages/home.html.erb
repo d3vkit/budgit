@@ -1,11 +1,88 @@
-<h1>Budgit</h1>
-<p>
-  Simple Budgeting Made Simple
-</p>
+<% pay_period = 0 %>
+<h1>Overview</h1>
+<div id="show_all_container" class="item_container round">
+	<% @items.each do |item| %>
+		<% type = item.class.to_s %>
+		<% if type == 'Bill' %>
+			<% date_of_item = Date.new(item.year.to_i, item.month.to_i, item.day.to_i) %>
+			<% amount = format_currency(h item.amount) %>
 
-<% if signed_in? %>
-	<%= link_to "View Profile", current_user, :class => "signup_button round" %>
-<% else %>
-	<%= link_to "Sign Up!", signup_path, :class => "signup_button round" %>
-<% end %>
+			<div id="all_<%= item.id -%>" class="ind_item">
+				<div class="item_options">
+					<div style="position: relative;">
+						<ul>
+							<li><%= link_to_function image_tag('icons/edit.png', :class => "icon"), "confirm_action('#confirm_edit_#{item.id}')" %></li>
+							<li><%= link_to_function image_tag('icons/red-x.png', :class => "icon"), "confirm_action('#confirm_delete_#{item.id}')" %></li>
+						</ul>
+						<span id="confirm_edit_<%= item.id -%>" class="confirm confirm_edit round">
+							<%= link_to "Edit Single Item", edit_bill_path(item) %> |
+							<%= link_to "Edit All", edit_recurring_bill_path(item.recurring_bill.id) if !item.occurs_once %>
+							<span class="confirm-pointer">&nbsp;</span>
+						</span>
+						<span id="confirm_delete_<%= item.id -%>" class="confirm confirm_delete round">
+							<%= link_to "Delete Single Item", item, :method => :delete %> |
+							<%= link_to "Delete All", recurring_bill_path(item.recurring_bill.id), :method => :delete if !item.occurs_once %>
+							<span class="confirm-pointer">&nbsp;</span>
+						</span>
+					</div>
+				</div>
+				<div class="item_date fleft">
+					<%= date_of_item.to_s(:humanize_date) %>
+				</div>
+				<div class="bill_name item_name fleft">
+
+					<% link_to item do %>
+						<span><%= h item.name.titleize %></span>
+					<% end %>
+
+				</div>
+				<div class="item_amount">
+					$<%= amount %>
+				</div>
+
+			</div>
+
+		<% elsif type == 'Income' %>
+			<%= "New Pay Period" -%>
+			<% date_of_item = Date.new(item.year.to_i, item.month.to_i, item.day.to_i) %>
+			<% item.per = 'hourly' ? amount = format_currency(h format_hourly_pay(item)) : amount = format_currency(h item.amount) %>
+
+			<div id="all_<%= item.id -%>" class="ind_item">
+				<div class="item_options">
+					<div style="position: relative;">
+						<ul>
+							<li><%= link_to_function image_tag('icons/edit.png', :class => "icon"), "confirm_action('#confirm_edit_#{item.id}')" %></li>
+							<li><%= link_to_function image_tag('icons/red-x.png', :class => "icon"), "confirm_action('#confirm_delete_#{item.id}')" %></li>
+						</ul>
+						<span id="confirm_edit_<%= item.id -%>" class="confirm confirm_edit round">
+							<%= link_to "Edit Single Item", edit_income_path(item) %> |
+							<%= link_to "Edit All", edit_recurring_income_path(item.recurring_income.id) if !item.occurs_once %>
+							<span class="confirm-pointer">&nbsp;</span>
+						</span>
+						<span id="confirm_delete_<%= item.id -%>" class="confirm confirm_delete round">
+							<%= link_to "Delete Single Item", item, :method => :delete %> |
+							<%= link_to "Delete All", recurring_income_path(item.recurring_income.id), :method => :delete if !item.occurs_once %>
+							<span class="confirm-pointer">&nbsp;</span>
+						</span>
+					</div>
+				</div>
+				<div class="item_date fleft">
+					<%= date_of_item.to_s(:humanize_date) %>
+				</div>
+				<div class="income_name item_name fleft">
+
+					<% link_to item do %>
+						<span><%= h item.name.titleize %></span>
+					<% end %>
+
+				</div>
+				<div class="item_amount">
+					$<%= amount %>
+				</div>
+
+			</div>
+
+		<% end %>
+	<% end %>
+</div>
 

@@ -1,28 +1,10 @@
-<h1>New income</h1>
+<div id="new_income_container" style="position: relative;">
+	<h1>New Income</h1>
 
-<% form_for(@income) do |f| %>
-  <%= f.error_messages %>
+	<p>Fill out each field below for the income you would like to add. For instance, if you are paid every 2 weeks on friday, you would enter 'every 2 weeks' in the frequency field, and 'on friday' in the weekday field, and then select if you're getting paid this week or next. Simple, right?</p>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :frequency %><br />
-    <%= f.text_field :frequency %>
-  </p>
-  <p>
-    <%= f.label :amount %><br />
-    <%= f.text_field :amount %>
-  </p>
-  <p>
-    <%= f.label :type %><br />
-    <%= f.text_field :type %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
+	<%= render :partial => "form" %>
 
-<%= link_to 'Back', :back %>
+	<%= link_to 'Back', incomes_path %>
+</div>
 

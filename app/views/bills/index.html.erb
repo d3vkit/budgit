@@ -1,30 +1,45 @@
 <h1>Bills</h1>
-<div id="show_bills_container" class="round">
+<div id="show_bills_container" class="item_container round">
 	<% @bills.each do |bill| %>
 		<% date_of_bill = Date.new(bill.year.to_i, bill.month.to_i, bill.day.to_i) %>
+		<% amount = format_currency(h bill.amount) %>
 
-	  <div id="bill_<%= bill.id -%>" class="ind_bill">
-			<div class="bill_options">
-				<ul>
-					<li><%= link_to image_tag('icons/edit.png', :class => "icon"), edit_bill_path(bill) %></li>
-					<li><%= link_to image_tag('icons/red-x.png', :class => "icon"), bill, :confirm => 'Are you sure?', :method => :delete %></li>
-				</ul>
+	  <div id="bill_<%= bill.id -%>" class="ind_item">
+			<div class="item_options">
+				<div style="position: relative;">
+					<ul>
+						<li><%= link_to_function image_tag('icons/edit.png', :class => "icon"), "confirm_action('#confirm_edit_#{bill.id}')" %></li>
+						<li><%= link_to_function image_tag('icons/red-x.png', :class => "icon"), "confirm_action('#confirm_delete_#{bill.id}')" %></li>
+					</ul>
+					<span id="confirm_edit_<%= bill.id -%>" class="confirm confirm_edit round">
+						<%= link_to "Edit Single Bill", edit_bill_path(bill) %> |
+						<%= link_to "Edit All", edit_recurring_bill_path(bill.recurring_bill.id) if !bill.occurs_once %>
+						<span class="confirm-pointer">&nbsp;</span>
+					</span>
+					<span id="confirm_delete_<%= bill.id -%>" class="confirm confirm_delete round">
+						<%= link_to "Delete Single Bill", bill, :method => :delete %> |
+						<%= link_to "Delete All", recurring_bill_path(bill.recurring_bill.id), :method => :delete if !bill.occurs_once %>
+						<span class="confirm-pointer">&nbsp;</span>
+					</span>
+				</div>
 			</div>
-			<div class="bill_date fleft">
+			<div class="item_date fleft">
 				<%= date_of_bill.to_s(:humanize_date) %>
 			</div>
-			<div class="bill_name fleft">
-				<% link_to bill do %>
-					<%= h bill.name.titleize %>
+			<div class="bill_name item_name fleft">
+
+				<% link_to bill, { :class => "" } do %>
+					<span><%= h bill.name.titleize %></span>
 				<% end %>
+
 			</div>
-			<div class="bill_amount">
-				$<%= h bill.amount %>
+			<div class="item_amount">
+				$<%= amount %>
 			</div>
 
 		</div>
 	<% end %>
 </div>
 
-<%= link_to 'New bill', new_bill_path %>
+<%= link_to "New bill", new_bill_path %>
 

@@ -1,5 +1,44 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def convert_day_to_weekday(day)
+    day = day.to_i
+    case day
+      when 1 then weekday = "Monday"
+      when 2 then weekday = "Tuesday"
+      when 3 then weekday = "Wednesday"
+      when 4 then weekday = "Thursday"
+      when 5 then weekday = "Friday"
+      when 6 then weekday = "Saturday"
+      when 7 then weekday = "Sunday"
+    end
+    return weekday
+  end
+
+  def format_currency(currency)
+    currency = currency.to_s
+    if currency.last == '0'
+      if currency.last(2) == ".#{currency.last}"
+        currency = currency+"0"
+      end
+    else
+      if currency.last(2) == ".#{currency.last}"
+        currency = currency+"0"
+      end
+    end
+    return currency
+  end
+
+  def format_hourly_pay(item)
+    if item.frequency == 'twice a month'
+      hours = item.hours_worked / 2
+    else
+      hours = item.hours_worked
+    end
+
+    amount = item.amount * hours
+    return amount
+  end
+
   #returns a title even if no @title is given in the method
   def title
     base_title = Constant::SITE_NAME
@@ -11,7 +50,8 @@ module ApplicationHelper
   end
 
   def logo
-    image_tag("logo.png", :alt => "budgit_logo", :title => "Budgit", :class => "round")
+    #image_tag("logo.png", :alt => "budgit_logo", :title => "Budgit", :class => "round")
+    "Logo Goes Here"
   end
 
   def options_for_select_with_attributes(container, selected = nil)

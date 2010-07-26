@@ -1,3 +1,24 @@
+@font-face {
+  font-family: Sansation;
+	src: url('../fonts/sansation/Sansation_Regular.ttf');
+	font-family: Walkway-UltraBold;
+	src: url('../fonts/walkway/Walkway_UltraBold.ttf');
+	font-family: Candela-Bold;
+	src: url('../fonts/candela/CandelaBold.otf');
+	font-family: Quicksand;
+	src: url('../fonts/quicksand/Quicksand_Book.otf');
+	font-family: Quicksand-Light;
+	src: url('../fonts/quicksand/Quicksand_Light.otf');
+	font-family: Quicksand-Bold;
+	src: url('../fonts/quicksand/Quicksand_Bold.otf');
+	font-family: Armwrestler;
+	src: url('../fonts/armwrestler/ArmWrestler.ttf');
+}
+
+h1 {
+  font-family: Armwrestler, sans-serif;
+}
+
 .container {
   width: 710px;
 }
@@ -25,6 +46,10 @@ body {
 .icon {
   border: 0;
   width: 25px;
+}
+
+.error-icon, .okay-icon {
+  margin: 0 0 0 5px;
 }
 
 /* Round corners */
@@ -71,8 +96,6 @@ body {
   border-radius:         0 0 0 5px;
 }
 
-
-
 #footer {
   text-align: center;
   margin-top: 10px;
@@ -81,7 +104,7 @@ body {
   margin-right: auto;
 }
 
-#footer .navigation {
+#footer .navigationigation {
   float: none;
 }
 
@@ -140,5 +163,83 @@ ul.users {
   height: 0;
   clear: both;
   visibility: hidden;
+}
+
+/*** navigation bar styles ***/
+
+ul.navigation,
+.navigation ul{
+/*Remove all spacings from the list items*/
+	margin: 0;
+	padding: 0;
+	cursor: default;
+	list-style-type: none;
+	display: inline;
+}
+
+ul.navigation{
+	display: table;
+}
+ul.navigation>li{
+	display: table-cell;
+	position: relative;
+	padding: 2px 6px;
+}
+
+
+
+ul.navigation li>ul{
+/*Make the sub list items invisible*/
+	display: none;
+	position: absolute;
+	max-width: 40ex;
+	margin-left: -6px;
+	margin-top: 2px;
+}
+
+ul.navigation li ul li {
+  display: block;
+}
+
+ul.navigation li:hover>ul{
+/*When hovered, make them appear*/
+	display : block;
+}
+
+.navigation ul li a{
+/*Make the hyperlinks as a block element, sort of a hover effect*/
+	display: block;
+	padding: 2px 10px;
+}
+
+/*** Menu colors (customizable) ***/
+
+ul.navigation,
+.navigation ul,
+.navigation ul li a{
+	background-color: #fff;
+	color: #369;
+}
+
+
+ul.navigation li:hover,
+.navigation ul li a:hover{
+	background-color: #369;
+	color: #fff;
+}
+
+ul.navigation li:active,
+.navigation ul li a:active{
+	background-color: #036;
+	color: #fff;
+}
+
+ul.navigation,
+.navigation ul{
+	border: 1px solid #369;
+}
+
+.navigation a{
+	text-decoration: none;
 }
 

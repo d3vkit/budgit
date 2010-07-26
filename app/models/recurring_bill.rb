@@ -8,5 +8,7 @@ class RecurringBill < ActiveRecord::Base
   validates_length_of :name, :maximum => 50
   validates_numericality_of :amount
 
+  serialize :day
+
 end
 

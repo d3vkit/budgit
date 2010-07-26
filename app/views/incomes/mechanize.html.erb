@@ -1,0 +1,17 @@
+  require 'rubygems'
+  require 'mechanize'
+
+  a = Mechanize.new { |agent|
+    agent.user_agent_alias = 'Mac Safari'
+  }
+
+  a.get('http://www.usbank.com/en/PersonalHome.cfm/') do |page|
+    search_result = page.form_with(:name => 'logon2') do |search|
+      search.userID = 'd3vkit84'
+    end.submit
+
+    search_result.links.each do |link|
+      puts link.text
+    end
+  end
+

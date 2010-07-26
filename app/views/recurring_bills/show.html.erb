@@ -1,0 +1,39 @@
+<% date_of_bill = Date.new(@current_year, @current_month, @current_day) %>
+<% amount = format_currency(h @recurring_bill.amount) %>
+
+<h1>Viewing Recurring Bill "<%= h @recurring_bill.name %>"</h1>
+<p>Occurs <%= @recurring_bill.frequency.titleize %></p>
+<div id="show_bills_container" class="item_container round">
+	<div id="bill_<%= @recurring_bill.id -%>" class="ind_item">
+		<div class="item_options">
+			<div style="position: relative;">
+				<ul>
+					<li><%= link_to_function image_tag('icons/edit.png', :class => "icon"), "confirm_action('#confirm_edit_#{@recurring_bill.id}')" %></li>
+					<li><%= link_to_function image_tag('icons/red-x.png', :class => "icon"), "confirm_action('#confirm_delete_#{@recurring_bill.id}')" %></li>
+				</ul>
+				<span id="confirm_edit_<%= @recurring_bill.id -%>" class="confirm confirm_edit round">
+					<%= link_to "Edit Recurring Bill", edit_recurring_bill_path(@recurring_bill) %> |
+					<span class="confirm-pointer">&nbsp;</span>
+				</span>
+				<span id="confirm_delete_<%= @recurring_bill.id -%>" class="confirm confirm_delete round">
+					<%= link_to "Delete Recurring Bill", @recurring_bill, :method => :delete %> |
+					<span class="confirm-pointer">&nbsp;</span>
+				</span>
+			</div>
+		</div>
+		<div class="item_date fleft">
+			<%= date_of_bill.to_s(:humanize_date) %>
+		</div>
+		<div class="bill_name item_name fleft">
+			<% link_to @recurring_bill, { :class => "jtextfill"} do %>
+				<span><%= h @recurring_bill.name.titleize %></span>
+			<% end %>
+		</div>
+		<div class="item_amount">
+			$<%= amount %>
+		</div>
+	</div>
+</div>
+
+<%= link_to "New bill", new_bill_path %>
+

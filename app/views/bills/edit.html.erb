@@ -1,6 +1,6 @@
 <div id="edit_bill_container" style="position: relative;">
 	<h1>Edit Bill</h1>
-	<p>This bill occurs <%= @bill.frequency.titleize %> [<%= link_to "change", edit_recurring_bill_path(@bill.recurring_bill_id) %>]</p>
+	<p>This bill happens <%= @bill.frequency.titleize %> [<%= link_to "change", edit_recurring_bill_path(@bill.recurring_bill_id) %>]</p>
 
 	<%= render :partial => 'form' %>
 

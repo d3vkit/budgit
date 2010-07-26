@@ -1,0 +1,33 @@
+<h1>Recurring Bills</h1>
+<div id="show_bills_container" class="round">
+	<% @bills.each do |bill| %>
+		<% #date_of_bill = Date.new(bill.year.to_i, bill.month.to_i, bill.day.to_i) %>
+		<% amount = format_currency(h bill.amount) %>
+
+	  <div id="bill_<%= bill.id -%>" class="ind_bill">
+			<div class="bill_options">
+				<div style="position: relative;">
+					<ul>
+						<li><%= link_to image_tag('icons/edit.png', :class => "icon"), edit_recurring_bill_path(bill) %></li>
+						<li><%= link_to image_tag('icons/red-x.png', :class => "icon"), bill, :method => :delete %></li>
+					</ul>
+				</div>
+			</div>
+			<div class="bill_date fleft">
+				<%= h bill.frequency.titleize %>
+			</div>
+			<div class="bill_name textfill fleft">
+				<% link_to bill do %>
+					<%= h bill.name.titleize %>
+				<% end %>
+			</div>
+			<div class="bill_amount">
+				$<%= amount %>
+			</div>
+
+		</div>
+	<% end %>
+</div>
+
+<%= link_to "New bill", new_bill_path %>
+

@@ -1,0 +1,22 @@
+<h1>Listing pay_periods</h1>
+
+<table>
+  <tr>
+    <th>Begins</th>
+    <th>Ends</th>
+  </tr>
+
+<% @pay_periods.each do |pay_period| %>
+  <tr>
+    <td><%=h pay_period.begins %></td>
+    <td><%=h pay_period.ends %></td>
+    <td><%= link_to 'Show', pay_period %></td>
+    <td><%= link_to 'Edit', edit_pay_period_path(pay_period) %></td>
+    <td><%= link_to 'Destroy', pay_period, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New pay_period', new_pay_period_path %>

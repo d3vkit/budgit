@@ -1,24 +1,13 @@
-# == Schema Information
-# Schema version: 20100705214924
-#
-# Table name: users
-#
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  password   :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#
-
 require 'digest'
 class User < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 10
 
-  has_many :incomes, :dependent => :destroy
+  has_many :incomes, :through => :recurring_incomes, :dependent => :destroy
+  has_many :recurring_incomes, :dependent => :destroy
   has_many :bills, :through => :recurring_bills, :dependent => :destroy
   has_many :recurring_bills, :dependent => :destroy
+  has_many :pay_periods, :dependent => :destroy
 
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation
