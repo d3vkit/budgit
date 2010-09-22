@@ -29,11 +29,11 @@ module ApplicationHelper
   end
 
   def format_hourly_pay(item)
-    if item.frequency == 'twice a month'
-      hours = item.hours_worked / 2
-    else
+    #if item.frequency == 'twice a month'
+    #  hours = item.hours_worked / 2
+    #else
       hours = item.hours_worked
-    end
+    #end
 
     amount = item.amount * hours
     return amount

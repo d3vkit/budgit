@@ -98,7 +98,8 @@ class IncomesController < ApplicationController
                 week_in_year = day.to_time.strftime("%W").to_i
                 if is_weekly || week_is_even?(week_in_year) && @income.alternator == 'even' || !week_is_even?(week_in_year) && @income.alternator == 'odd'
                   this_day = day.to_date.strftime("%d")
-                  new_income = duplicate_recurring_income(@income,this_day)
+                  this_month = day.to_date.strftime("%m")
+                  new_income = duplicate_recurring_income(@income,this_day.to_i,this_month.to_i)
                   new_income.year = @current_year
 
                   begin_date = Date.new(new_income.year,new_income.month,day)
@@ -117,7 +118,7 @@ class IncomesController < ApplicationController
                 logger.info "making income for month #{array_month}"
                 if is_twice_a_month
                   logger.info "income is twice a month"
-                  new_income = duplicate_recurring_income(@income,@income.day[0],array_month)
+                  new_income = duplicate_recurring_income(@income,@income.day[0].to_i,array_month.to_i)
                   new_income.year = @current_year
                   begin_date = Date.new(new_income.year,new_income.month,@income.day[0].to_i)
                   end_date = Date.new(new_income.year,new_income.month,@income.day[1].to_i).to_time.advance(:days => -1).to_date
@@ -125,7 +126,7 @@ class IncomesController < ApplicationController
 
                   new_income.pay_period_id = new_pay_period.id
 
-                  new_income2 = duplicate_recurring_income(@income,@income.day[1],array_month)
+                  new_income2 = duplicate_recurring_income(@income,@income.day[1].to_i,array_month.to_i)
                   new_income2.year = @current_year
                   begin_date = Date.new(new_income2.year,new_income2.month,@income.day[1].to_i)
                   end_date = Date.new(new_income2.year,new_income2.month,@income.day[0].to_i).to_time.advance(:months => 1, :days => -1).to_date
@@ -141,7 +142,7 @@ class IncomesController < ApplicationController
                   end
                 else
                   logger.info "income is monthly"
-                  new_income = duplicate_recurring_income(@income,@income.day,array_month)
+                  new_income = duplicate_recurring_income(@income,@income.day.to_i,array_month.to_i)
                   new_income.year = @current_year
                   begin_date = Date.new(new_income.year,new_income.month,@income.day.to_i)
                   end_date = Date.new(new_income.year,new_income.month,@income.day.to_i).to_time.advance(:months => 1, :days => -1).to_date
@@ -185,17 +186,17 @@ class IncomesController < ApplicationController
 
     new_income = current_user.incomes.build(income.attributes)
     if !day.blank? && !month.blank?
-      end_of_month = Date.new(@current_year,month).end_of_month.to_time.strftime("%d")
-      if day.to_i > end_of_month.to_i
+      end_of_month = Date.new(@current_year,month).end_of_month.to_time.strftime("%d").to_i
+      if day > end_of_month
         new_income.day = end_of_month
       else
-        new_income.day = day.to_i
+        new_income.day = day
       end
     else
-      new_income.day = day.to_i if !day.blank?
+      new_income.day = day if !day.blank?
     end
     new_income.recurring_income_id = income.id
-    month.blank? ? new_income.month = @current_month : new_income.month = month.to_i
+    month.blank? ? new_income.month = @current_month : new_income.month = month
     return new_income
   end
 

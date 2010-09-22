@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :bills, :through => :recurring_bills, :dependent => :destroy
   has_many :recurring_bills, :dependent => :destroy
   has_many :pay_periods, :dependent => :destroy
+  has_many :funds, :dependent => :destroy
 
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation

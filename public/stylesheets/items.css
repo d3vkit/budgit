@@ -45,12 +45,36 @@
   cursor: pointer;
 }
 
+.item_container .item_date, .item_container .item_paid {
+  font-size: .5em;
+}
+
 .item_container .item_date {
   width: 15%;
-  font-size: .5em;
   padding-right: 10px;
   text-align: center;
   font-family: Quicksand, sans-serif;
+}
+
+.item_container .item_paid {
+  position: absolute;
+}
+
+.item_container .item_paid:hover {
+  cursor: pointer;
+}
+
+.item_container .item_paid img {
+  width: 25px;
+  vertical-align: middle;
+}
+
+.item_container .item_paid_false {
+  opacity: .3;
+}
+
+.item_container .item_paid_true {
+  opacity: .9;
 }
 
 .item_container .item_name {

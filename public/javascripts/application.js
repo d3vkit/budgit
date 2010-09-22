@@ -66,6 +66,70 @@ $(function() {
     event.stopPropagation();
   });
 
+  $('.item_name').children().children('span').each(function() {
+    var str = $(this).html();
+    var subStr = str.substring(0,10);
+    var len = str.length;
+
+    if(len > 10) {
+      subStr = subStr+"...";
+      $(this).html(subStr);
+    }
+
+    $(this).parent().mouseenter(function(){
+      $(this).html(str);
+    }).mouseleave(function(){
+      $(this).html(subStr);
+    });
+
+  });
+
+  $('.item_paid').each(function() {
+    $(this).mouseenter(function() {
+      $(this).children('.item_paid_false').css('opacity','.7');
+    }).mouseleave(function() {
+      $(this).children('.item_paid_false').css('opacity','.3');
+    });
+  });
+
+  var tooltip = $('<div></div>')
+    .css({
+      position: 'absolute',
+      display: 'none',
+      border: '1px solid black',
+      background: 'lightblue',
+      color: 'white',
+      padding: '10px',
+      MozBorderRadius: '5px',
+      borderRadius: '5px',
+      WebkitBorderRadius: '5px'
+    });
+
+  $('.tooltip').each(function() {
+    var el = $(this);
+    var el_title = el.attr('title');
+    var el_alt = el.attr('alt');
+
+    el.mouseenter(function() {
+      el.removeAttr('title').removeAttr('alt');
+
+      tooltip
+        .stop(true,true)
+        .appendTo($(this))
+        .text(el_title)
+        .css({
+          zIndex: '1000'
+          //top: $(this).position().top,
+          //left: $(this).position().left
+        })
+        .fadeIn('slow');
+    })
+    .mouseleave(function() {
+      tooltip.fadeOut('slow');
+      el.attr({ title: el_title, alt: el_alt });
+    });
+  });
+
 });
 
 function check_field(type,item,el) {

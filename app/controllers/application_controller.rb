@@ -221,14 +221,18 @@ class ApplicationController < ActionController::Base
     return day
   end
 
-  def get_dates_from_(weekday)
+  def get_dates_from_(weekday,range=[@last_month,@current_month,@next_month])
     date_arr = []
-    year = Time.now.strftime("%Y").to_i
-    month = Time.now.strftime("%m").to_i
-
-    (Date.new(year,month,1) .. Date.new(year,month,-1)).each do |d|
-      d = d.to_s(:humanize_date)
-      date_arr << d if d.to_date.strftime("%w").to_i == weekday.to_i
+    range.each do |month|
+      if month == 1 && month == @next_month && @current_month == 12
+        year = @current_year + 1
+      else
+        year = @current_year
+      end
+      (Date.new(year,month,1) .. Date.new(year,month,-1)).each do |d|
+        d = d.to_s(:humanize_date)
+        date_arr << d if d.to_date.strftime("%w").to_i == weekday.to_i || ((d.to_date.strftime("%w").to_i == 0) && (weekday.to_i == 7))
+      end
     end
     return date_arr
   end
@@ -250,10 +254,11 @@ class ApplicationController < ActionController::Base
   end
 
   def create_new_pay_period(begin_date,end_date)
-    if !PayPeriod.exists?(:user_id => @current_user.id, :begins => begin_date)
+    find_pay_period = PayPeriod.find(:last, :conditions => ['user_id = ? AND begins <= ? AND ends >= ?', @current_user.id, begin_date, begin_date])
+    if find_pay_period.blank?
       new_pay_period = @current_user.pay_periods.create(:begins => begin_date, :ends => end_date)
     else
-      new_pay_period = PayPeriod.find_by_user_id(@current_user.id, :conditions => ['begins = ?', begin_date])
+      new_pay_period = find_pay_period
     end
     return new_pay_period
   end

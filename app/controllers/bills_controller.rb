@@ -98,7 +98,8 @@ class BillsController < ApplicationController
                 week_in_year = day.to_time.strftime("%W").to_i
                 if is_weekly || week_is_even?(week_in_year) && @bill.alternator == 'even' || !week_is_even?(week_in_year) && @bill.alternator == 'odd'
                   this_day = day.to_date.strftime("%d")
-                  new_bill = duplicate_recurring_bill(@bill,this_day)
+                  this_month = day.to_date.strftime("%m")
+                  new_bill = duplicate_recurring_bill(@bill,this_day.to_i,this_month.to_i)
                   new_bill.year = @current_year
 
                   begin_date = Date.new(new_bill.year,new_bill.month,this_day.to_i)
@@ -111,10 +112,10 @@ class BillsController < ApplicationController
                 end
               end
             elsif is_monthly || is_twice_a_month
-              bill_months = (1..12).to_a
+              bill_months = (@last_month..@next_month).to_a
               bill_months.each do |this_month|
                 if is_twice_a_month
-                  new_bill = duplicate_recurring_bill(@bill,@bill.day[0],this_month)
+                  new_bill = duplicate_recurring_bill(@bill,@bill.day[0].to_i,this_month.to_i)
                   new_bill.year = @current_year
 
                   begin_date = Date.new(new_bill.year,new_bill.month,@bill.day[0].to_i)
@@ -123,7 +124,7 @@ class BillsController < ApplicationController
 
                   new_bill.pay_period_id = new_pay_period.id
 
-                  new_bill2 = duplicate_recurring_bill(@bill,@bill.day[1],this_month)
+                  new_bill2 = duplicate_recurring_bill(@bill,@bill.day[1].to_i,this_month.to_i)
                   new_bill2.year = @current_year
 
                   begin_date = Date.new(new_bill2.year,new_bill2.month,@bill.day[1].to_i)
@@ -137,7 +138,7 @@ class BillsController < ApplicationController
                     format.xml  { render :xml => @bill.errors, :status => :unprocessable_entity }
                   end
                 else
-                  new_bill = duplicate_recurring_bill(@bill,@bill.day,this_month)
+                  new_bill = duplicate_recurring_bill(@bill,@bill.day.to_i,this_month.to_i)
                   new_bill.year = @current_year
 
                   begin_date = Date.new(new_bill.year,new_bill.month,@bill.day.to_i)
@@ -179,17 +180,17 @@ class BillsController < ApplicationController
 
     new_bill = current_user.bills.build(bill.attributes)
     if !day.blank? && !month.blank?
-      end_of_month = Date.new(@current_year,month).end_of_month.to_time.strftime("%d")
-      if day.to_i > end_of_month.to_i
+      end_of_month = Date.new(@current_year,month).end_of_month.to_time.strftime("%d").to_i
+      if day > end_of_month
         new_bill.day = end_of_month
       else
-        new_bill.day = day.to_i
+        new_bill.day = day
       end
     else
-      new_bill.day = day.to_i if !day.blank?
+      new_bill.day = day if !day.blank?
     end
     new_bill.recurring_bill_id = bill.id
-    month.blank? ? new_bill.month = @current_month : new_bill.month = month.to_i
+    month.blank? ? new_bill.month = @current_month : new_bill.month = month
     return new_bill
   end
 

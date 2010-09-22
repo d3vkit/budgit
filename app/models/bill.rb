@@ -7,7 +7,6 @@ class Bill < ActiveRecord::Base
   has_one :user, :through => :recurring_bill
 
   validates_presence_of :name, :frequency, :amount
-  validates_length_of :name, :maximum => 15
   validates_numericality_of :amount
 
   serialize :day

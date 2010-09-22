@@ -7,7 +7,6 @@ class Income < ActiveRecord::Base
   has_one :user, :through => :recurring_income
 
   validates_presence_of :name, :frequency, :amount, :per, :hours_worked
-  validates_length_of :name, :maximum => 15
   validates_numericality_of :amount, :hours_worked
 
   serialize :day

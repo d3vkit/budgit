@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100726075929) do
+ActiveRecord::Schema.define(:version => 20100922073248) do
 
   create_table "bills", :force => true do |t|
     t.string   "name"
@@ -25,6 +25,14 @@ ActiveRecord::Schema.define(:version => 20100726075929) do
     t.datetime "updated_at"
     t.boolean  "occurs_once",       :default => false
     t.integer  "pay_period_id"
+    t.boolean  "paid",              :default => false
+  end
+
+  create_table "funds", :force => true do |t|
+    t.decimal  "amount"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "incomes", :force => true do |t|

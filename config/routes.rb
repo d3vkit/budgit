@@ -1,11 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :pay_periods
-
   map.resources :bills
   map.resources :recurring_bills
   map.resources :incomes
   map.resources :recurring_incomes
   map.resources :users
+  map.resources :funds
   map.resources :sessions, :only => [:new, :create, :destroy]
 
   map.signin '/signin', :controller => 'sessions', :action => 'new'
